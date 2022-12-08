@@ -45,7 +45,7 @@ async function login(){
         setTimeout(function () {
             location.href= "dashboard.html";
         }, 2000);     
-        
+
        
     }else{
         Swal.fire({
@@ -60,6 +60,7 @@ async function login(){
 
 function listarUsuarios(){
     validaToken();
+    $("#table_usuario").show();
     var settings={
         method: 'GET',
         headers:{
@@ -74,12 +75,19 @@ function listarUsuarios(){
         
             var usuarios = '';
             for(const usuario of data){
-                console.log(usuario.correo)
+                //console.log(usuario.correo)
+                var date =usuario.fechaNacimiento+"";
+                //console.log(date)
+                var dato =date.split('T');
                 usuarios += `
                 <tr>
                     <th scope="row">${usuario.id}</th>
                     <td>${usuario.nombre}</td>
                     <td>${usuario.apellidos}</td>
+                    <td>${usuario.documento}</td>
+                    <td>${usuario.direccion}</td>
+                    <td>${dato[0]}</td>
+                    <td>${usuario.telefono}</td>
                     <td>${usuario.correo}</td>
                     <td>
                     <button type="button" class="btn btn-outline-danger" 
@@ -139,15 +147,32 @@ function verModificarUsuario(id){
                 </div>
               
                 <form action="" method="post" id="myForm">
-                    <input type="hidden" name="id" id="id" value="${usuario.id}">
-                    <label for="nombre" class="form-label">First Name</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" required value="${usuario.nombre}"> <br>
-                    <label for="apellidos"  class="form-label">Last Name</label>
-                    <input type="text" class="form-control" name="apellidos" id="apellidos" required value="${usuario.apellidos}"> <br>
-                    <label for="correo" class="form-label">correo</label>
-                    <input type="email" class="form-control" name="correo" id="correo" required value="${usuario.correo}"> <br>
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required> <br>
+                <input type="hidden" name="id" id="id" value="${usuario.id}">
+
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" id="nombre" required value="${usuario.nombre}"> <br>
+
+                <label for="apellidos"  class="form-label">Apellidos</label>
+                <input type="text" class="form-control" name="apellidos" id="apellidos" required value="${usuario.apellidos}"> <br>
+
+                <label for="documento"  class="form-label">Documento</label>
+                <input type="text" class="form-control" name="documento" id="documento" required value="${usuario.documento}"> <br>
+
+                
+                <label for="direccion"  class="form-label">Direccion</label>
+                <input type="text" class="form-control" name="direccion" id="direccion" required value="${usuario.direccion}"> <br>
+
+                <label for="fechaNacimiento"  class="form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" required value="${usuario.fechaNacimiento}"> <br>
+
+                <label for="telefono"  class="form-label">Telefono</label>
+                <input type="text" class="form-control" name="telefono" id="telefono" required value="${usuario.telefono}"> <br>
+
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" class="form-control" name="correo" id="correo" required value="${usuario.correo}"> <br>
+
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required> <br>
                     <button type="button" class="btn btn-outline-warning" 
                         onclick="modificarUsuario('${usuario.id}')">Modificar
                     </button>
@@ -198,7 +223,10 @@ function verUsuario(id){
     .then(response => response.json())
     .then(function(usuario){
             var cadena='';
-            if(usuario){                
+            if(usuario){  
+                var date =usuario.fechaNacimiento+"";
+                //console.log(date)
+                var dato =date.split('T');              
                 cadena = `
                 <div class="p-3 mb-2 bg-light text-dark">
                     <h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Visualizar Usuario</h1>
@@ -206,6 +234,10 @@ function verUsuario(id){
                 <ul class="list-group">
                     <li class="list-group-item">Nombre: ${usuario.nombre}</li>
                     <li class="list-group-item">apellidos: ${usuario.apellidos}</li>
+                    <li class="list-group-item">Documento: ${usuario.documento}</li>
+                    <li class="list-group-item">Direccion: ${usuario.direccion}</li>
+                    <li class="list-group-item">Fecha : ${dato[0]}</li>
+                    <li class="list-group-item">Telefono: ${usuario.telefono}</li>
                     <li class="list-group-item">Correo: ${usuario.correo}</li>
                 </ul>`;
               
@@ -239,17 +271,31 @@ function registerForm(){
             </div>
               
             <form action="" method="post" id="myForm1">
-                <input type="hidden" name="id" id="id">
-                <label for="nombre" class="form-label">First Name</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" required> <br>
-                <label for="apellidos"  class="form-label">Last Name</label>
-                <input type="text" class="form-control" name="apellidos" id="apellidos" required> <br>
-                <label for="documento"  class="form-label">document</label>
-                <input type="text" class="form-control" name="documento" id="documento" required> <br>
-                <label for="correo" class="form-label">correo</label>
-                <input type="email" class="form-control" name="correo" id="correo" required> <br>
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required> <br>
+            <input type="hidden" name="id" id="id">
+
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" required> <br>
+
+            <label for="apellidos"  class="form-label">Apellidos</label>
+            <input type="text" class="form-control" name="apellidos" id="apellidos" required> <br>
+
+            <label for="documento"  class="form-label">Documento</label>
+            <input type="text" class="form-control" name="documento" id="documento" required> <br>
+
+            <label for="direccion"  class="form-label">Direccion</label>
+            <input type="text" class="form-control" name="direccion" id="direccion" > <br>
+
+            <label for="fechaNacimiento"  class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" > <br>
+
+            <label for="telefono"  class="form-label">Telefono</label>
+            <input type="text" class="form-control" name="telefono" id="telefono" > <br>
+
+            <label for="correo" class="form-label">correo</label>
+            <input type="email" class="form-control" name="correo" id="correo" required> <br>
+
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required> <br>
                 <button type="button" class="btn btn-outline-info" onclick="registrarUsuario()">Registrar</button>
             </form>`;
             document.getElementById("contentModal").innerHTML = cadena;
@@ -272,8 +318,31 @@ async function registrarUsuario(){
         },
         body: JSON.stringify(jsonData)
     });
-    //listarUsuarios();
-    //alertas("Se ha registrado el usuario exitosamente!",1)
+    if(localStorage.token == undefined){
+        console.log(request.status);
+        if(request.status=='201'){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Uusuario registrado exitosamente',
+                showConfirmButton: false,
+                timer: 1500
+              })          
+           
+        }else{
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                text: 'ingrese los datos de manera correcta',
+                showConfirmButton: false,
+                timer: 3000
+              });
+        }
+    }else{
+      listarUsuarios();
+      alertas("Se ha registrado el usuario exitosamente!",1)
+    }
+    
     document.getElementById("contentModal").innerHTML = '';
     var myModalEl = document.getElementById('modalUsuario')
     var modal = bootstrap.Modal.getInstance(myModalEl) // Returns a Bootstrap modal instance
